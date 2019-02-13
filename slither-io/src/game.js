@@ -4,7 +4,7 @@ Game.prototype = {
     preload: function() {
 
         //load assets
-        this.game.load.image('circle','asset/circle.png');
+        this.game.load.image('player','asset/player.png');
     	this.game.load.image('shadow', 'asset/white-shadow.png');
     	this.game.load.image('background', 'asset/tile.png');
 
@@ -38,12 +38,14 @@ Game.prototype = {
         this.game.snakes = [];
 
         //create player
-        var snake = new PlayerSnake(this.game, 'circle', 0, 0);
+        var snake = new PlayerSnake(this.game, 'player', 0, 0);
         this.game.camera.follow(snake.head);
 
         //create bots
-        new BotSnake(this.game, 'circle', -200, 0);
-        new BotSnake(this.game, 'circle', 200, 0);
+        new BotSnake(this.game, 'player', -200, 0);
+        new BotSnake(this.game, 'player', 200, 0);
+        new BotSnake(this.game, 'player', 400, 0);
+
 
         //initialize snake groups and collision
         for (var i = 0 ; i < this.game.snakes.length ; i++) {

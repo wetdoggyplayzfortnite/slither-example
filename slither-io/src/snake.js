@@ -43,8 +43,8 @@ Snake = function(game, spriteKey, x, y) {
     this.head.snake = this;
 
     this.lastHeadPosition = new Phaser.Point(this.head.body.x, this.head.body.y);
-    //add 30 sections behind the head
-    this.initSections(30);
+    //add 10 sections behind the head
+    this.initSections(10);
 
     //initialize the eyes
     this.eyes = new EyePair(this.game, this.head, this.scale);
@@ -111,9 +111,9 @@ Snake.prototype = {
         //add a circle body to this section
         sec.body.clearShapes();
         sec.body.addCircle(sec.width*0.5);
-
+        
         return sec;
-    },
+    },        
     /**
      * Add to the queue of new sections
      * @param  {Integer} amount Number of sections to add to queue
