@@ -93,5 +93,3 @@ Game.prototype = {
         }
     }
 };
-
-
