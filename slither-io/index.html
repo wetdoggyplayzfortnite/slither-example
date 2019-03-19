@@ -13,11 +13,15 @@
     <script src="src/shadow.js"></script>
     <script src="src/food.js"></script>
     <script src="src/util.js"></script>
-</head>
-    <script>
-   src="/src/game.js"></script>
-    look it workd
-    i will update this when the time is 3:00 current time: 2:32
-    <canvas id="myCanvas" width="500" height="600"
-    style="border:1px solid #000000;">
-    </canvas>
+  </head>
+  <body>
+      <script>
+      (function() {
+          var game = new Phaser.Game(800, 500, Phaser.AUTO, null);
+
+          game.state.add('Game', Game);
+          game.state.start('Game');
+      })();
+      </script>
+  </body>
+  </html>
