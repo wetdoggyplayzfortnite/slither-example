@@ -17,7 +17,7 @@ Game.prototype = {
         var width = this.game.width;
         var height = this.game.height;
 
-        this.game.world.setBounds(-width, -height, width*4, height*4);
+        this.game.world.setBounds(-width, -height, width*6, height*4);
     	this.game.stage.backgroundColor = '#444';
 
         //add tilesprite background

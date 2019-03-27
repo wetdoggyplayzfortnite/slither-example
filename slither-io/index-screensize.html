@@ -1,0 +1,298 @@
+
+<html lang="en">
+<head>
+<title>browsersize.com</title>
+<meta charset="UTF-8">
+<meta name="keywords" content="browser size screen resolution set resize">
+<meta name="author" content="Ates Goral">
+<meta name="description" content="A nifty online tool for setting your browser size while doing Web design.">
+<link rel="stylesheet" href="main.css?200812271631">
+<script>
+function $(id) { return document.getElementById(id); }
+
+function init() {
+    var resizeWindow = function (w, h) {
+          var n = window, d = document, s = n.screen;
+
+        function r(o) {
+            n.resizeTo(Number(w) + o, h);
+
+            return n.innerWidth || d.body.clientWidth;
+        }
+
+        function c(t, u) {
+            return t > u ? (t - u) >> 1 : 0;
+        }
+
+        if (r(1) == r(0)) {
+            if (typeof p == "undefined" || p.closed) {
+                $("info").className = "no_popup";
+
+                p = n.open(n.location.href, "resize_popup",
+                    "menubar,toolbar,location,directories,status,resizable,titlebar,"
+                        .split(",").join("=yes,")
+                    + ",width=" + w + ",height=" + h
+                    + ",left=" + c(s.width, w) + ",top=" + c(s.height, h));
+            } else {
+                p.focus();
+            }
+
+            p.resizeTo(w, h);
+            n = p;
+        }
+
+        if (w > s.width || h > s.height) {
+            n.moveTo(0, 0);
+        }
+    };
+
+    if (window.name == "resize_popup" && window.opener) {
+        window.opener.$("info").className = "no_resize";
+    }
+
+    var anchors = $("sizes").getElementsByTagName("a");
+
+    for (var i = 0; i < anchors.length; i++) {
+        var anchor = anchors[i];
+
+        anchor.href =
+            "javascript:(" + resizeWindow.toString().replace(/\s/g, "")
+                .replace(/(function(?!\()|return|typeof|var)/g, "$1 ")
+            + ")(" + anchor.innerHTML.replace(/ x/, ",") + ");";
+    }
+
+    $("set_custom").onclick = function () {
+        resizeWindow($("width").value, $("height").value);
+    };
+
+    var tokens = /\?(\d+)x(\d+)(!?)$/.exec(window.location.search);
+
+    if (tokens) {
+        resizeWindow(tokens[1], tokens[2]);
+
+        if (tokens[3] == "!") {
+            window.history.back();
+        }
+    }
+
+    function updateSizes() {
+        var uniwin = {
+            width: window.innerWidth || document.documentElement.clientWidth
+                || document.body.offsetWidth,
+            height: window.innerHeight || document.documentElement.clientHeight
+                || document.body.offsetHeight
+        };
+
+        $("info_sw").innerHTML = screen.width;
+        $("info_sh").innerHTML = screen.height;
+        $("info_ww").innerHTML = uniwin.width;
+        $("info_wh").innerHTML = uniwin.height;
+    }
+
+    updateSizes();
+
+    window.addEventListener('resize', updateSizes);
+}
+
+function dismissInfo() {
+    $("info").className = "hidden";
+}
+</script>
+</head>
+
+<body class="setmy">
+
+<table cellspacing="0" cellpadding="0" border="0" width="100%">
+<tr id="info" class="no_js">
+    <td colspan="3">
+        <span id="info_label">Attention: </span>
+        <span class="info_text" id="info_text_no_js">
+            JavaScript is probably currently disabled, blocked or not supported
+            by your browser. This page strictly requires JavaScript to operate.
+            Please enable JavaScript or switch to a browser that supports it.
+        </span>
+        <span class="info_text" id="info_text_resize_common">
+            Your current browser settings probably do not allow the resizing of
+            this window, the window is maximized or the target browser size is
+            larger than your desktop size.
+        </span>
+        <span class="info_text" id="info_text_no_popup">
+            As a workaround, an attempt to open a new popup window that is
+            resizable has been made, but the popup has probably been blocked.
+            Please enable popups for this page.
+        </span>
+        <span class="info_text" id="info_text_no_resize">
+            As a workaround, a new popup window has been opened.
+        </span>
+        If you think that this assumption was in error, please
+        <a href="https://github.com/atesgoral/browsersize.com/issues">open an issue</a>.
+        <span id="info_dismiss">[ <a href="javascript:dismissInfo()">X</a> ]</span>
+    </td>
+</tr>
+<script type="text/javascript">dismissInfo()</script>
+<tr class="white">
+    <td width="10"><img src="i/s.gif" width="10" alt=""></td>
+    <td width="521">
+        <table cellspacing="0" cellpadding="0" border="0" width="521">
+            <tr><td width="521" id="sector_8"><a href="/" class="sub"><img src="i/setmy_logo_a.gif" width="89" height="58" alt="" border="0"><img src="i/setmy_logo_b.gif" width="81" height="58" alt="setmy" border="0"><img src="i/setmy_logo_c.gif" width="1" height="58" alt="" border="0"><img src="i/domain.gif" width="291" height="58" alt=".browsersize.com" border="0"><img src="i/w.gif" width="59" height="58" border="0" alt=""></a></td></tr>
+        </table>
+    </td>
+    <td class="v_middle">
+        <table border="0" cellpadding="0" cellspacing="0">
+            <tr>
+                <td width="10"></td>
+                <td class="lighter">Current:</td>
+            </tr>
+            <tr>
+                <td class="v_middle"><img src="i/arrow_r.gif" width="8" height="7" alt=""></td>
+                <td>Browser window size: <span id="info_ww">?</span> x <span id="info_wh">?</span></td>
+            </tr>
+            <tr>
+                <td class="v_middle"><img src="i/arrow_r.gif" width="8" height="7" alt=""></td>
+                <td>Screen size: <span id="info_sw">?</span> x <span id="info_sh">?</span></td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr>
+    <td rowspan="7"></td>
+    <td colspan="2">
+        <table cellspacing="0" cellpadding="0" border="0" width="521">
+            <tr>
+                <td width="89" height="19" id="sector_16"><img src="i/round_b.gif" width="89" height="19" alt=""></td>
+                <td width="432" class="desc">a nifty online tool for setting your browser size while doing Web design</td>
+            </tr>
+            <tr><td height="10" colspan="2"></td></tr>
+            <tr>
+                <td height="19" id="sector_16" class="tab"><img src="i/tabdot_setmy.gif" width="11" height="19" alt=""></td>
+                <td></td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr>
+    <td colspan="2" class="white pad10">
+        <table cellpadding="0" cellspacing="0" border="0" width="800">
+            <tr>
+                <td>
+                    <table class="buttons" cellpadding="0" cellspacing="10" border="0" width="450" id="sizes">
+                        <tr>
+                            <td><a href="#">640 x 480</a></td>
+                            <td><a href="#">800 x 600</a></td>
+                            <td><a href="#">1024 x 768</a></td>
+                        </tr>
+                        <tr>
+                            <td><a href="#">1152 x 864</a></td>
+                            <td><a href="#">1280 x 1024</a></td>
+                            <td><a href="#">1600 x 1200</a></td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="doc">
+                Click on one of the links on the left to set your browser's size to one of the standard screen resolutions, or use them as <a href="http://en.wikipedia.org/wiki/Bookmarklet">bookmarklets</a>.
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<!--tr>
+    <td colspan="2">
+        <table cellspacing="0" cellpadding="0" border="0" width="521">
+            <tr><td height="10" colspan="2"></td></tr>
+            <tr>
+                <td width="89" height="19" id="sector_16" class="tab"><img src="i/tabdot_setmy.gif" width="11" height="19" alt=""><img src="i/tabdot_setmy.gif" width="11" height="19" alt=""></td>
+                <td width="432"></td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr>
+    <td colspan="2" class="white pad10">
+        <table cellpadding="0" cellspacing="0" border="0" width="800">
+            <tr>
+                <td>
+                    <table cellpadding="10" cellspacing="0" border="0" width="450" class="grid">
+                        <tr id="link">
+                            <td><a href="https://browsersize.com/640x480">640 x 480</a></td>
+                            <td><a href="https://browsersize.com/800x600">800 x 600</a></td>
+                            <td class="grid_right"><a href="https://browsersize.com/1024x768">1024 x 768</a></td>
+                        </tr>
+                        <tr id="link" class="grid_bottom">
+                            <td><a href="https://browsersize.com/1152x864">1152 x 864</a></td>
+                            <td><a href="https://browsersize.com/1280x1024">1280 x 1024</a></td>
+                            <td class="grid_right"><a href="https://browsersize.com/1600x1200">1600 x 1200</a></td>
+                        </tr>
+                    </table>
+                    <div class="pad">
+                        <br><br>
+                        URL syntax:<br>
+                        https://browsersize.com/&lt;width&gt;x&lt;height&gt;[!]<br><br>
+                        Examples:<br>
+                        <a href="https://browsersize.com/900x500">https://browsersize.com/900x500</a><br>
+                        <a href="https://browsersize.com/750x550!">https://browsersize.com/750x550!</a><br>
+                    </div>
+                </td>
+                <td class="doc">
+                    Click on one of the links on the left to set your browser's size by going to a URL.
+                    <p>You can create your own links that specify arbitrary dimensions. Start with "https://browsersize.com/", append the width, an "x" as the delimiter and finally the height.
+                    A "!" at the end makes the browser go back to the page that you were previously on.</p>
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr-->
+<tr>
+    <td colspan="2">
+        <table cellspacing="0" cellpadding="0" border="0" width="521">
+            <tr><td height="10" colspan="2"></td></tr>
+            <tr>
+                <td width="89" height="19" id="sector_16" class="tab"><img src="i/tabdot_setmy.gif" width="11" height="19" alt=""><img src="i/tabdot_setmy.gif" width="11" height="19" alt=""></td>
+                <td width="432"></td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr>
+    <td colspan="2" class="white pad10">
+        <table cellpadding="0" cellspacing="0" border="0" width="800">
+            <tr>
+                <td>
+                    <table cellpadding="0" cellspacing="10" border="0" width="450">
+                        <tr class="button">
+                            <td><label for="width">Width</label></td>
+                            <td><label for="height">Height</label></td>
+                            <td></td>
+                        </tr>
+                        <tr class="button">
+                            <td><input type="text" id="width" value="1024"/></td>
+                            <td><input type="text" id="height" value="768"/></td>
+                            <td><input id="set_custom" type="button" value="Set"/></td>
+                        </tr>
+                    </table>
+                </td>
+                <td class="doc">
+                    To set your browser's size to a custom size, enter the width and height and click <strong>Set</strong>.
+                </td>
+            </tr>
+        </table>
+    </td>
+</tr>
+<tr>
+    <td colspan="2"><div class="copyright_sub">&copy; 2005-2017 <a href="http://magnetiq.com/">Ates Goral</a></div></td>
+</tr>
+</table>
+
+</body>
+
+<script type="text/javascript">init();</script>
+<script type="text/javascript">
+var gaJsHost = (("https:" == document.location.protocol) ? "https://ssl." : "http://www.");
+document.write(unescape("%3Cscript src='" + gaJsHost + "google-analytics.com/ga.js' type='text/javascript'%3E%3C/script%3E"));
+</script>
+<script type="text/javascript">
+var pageTracker = _gat._getTracker("UA-912088-3");
+pageTracker._setDomainName(".browsersize.com");
+pageTracker._trackPageview();
+</script>
+</body>
+</html>
