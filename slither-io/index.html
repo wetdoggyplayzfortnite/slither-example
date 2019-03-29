@@ -15,9 +15,13 @@
     <script src="src/util.js"></script>
   </head>
   <body>
+
       <script>
+
       (function() {
-          var game = new Phaser.Game(1000, 1000,  Phaser.AUTO, null);
+        var w = window.innerWidth;
+        var h = window.innerHeight;
+          var game = new Phaser.Game(w, h,  Phaser.AUTO, null);
 
           game.state.add('Game', Game);
           game.state.start('Game');
